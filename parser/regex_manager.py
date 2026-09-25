@@ -1,6 +1,7 @@
-import regex as re
+import re
 import string
 from datetime import datetime
+from auto_marker_generator import UnsupervisedMarkerExtractor
 
 
 def verify_one_regex_to_match_whole_log(log, regex):
@@ -11,10 +12,9 @@ def verify_one_regex_to_match_whole_log(log, regex):
     log_outside_equals = re.sub(r'\{[^\}]*\}', '', log_clean1).count('=')
     log_total_equals = log_clean.count('=')
     colon_indices = [m.start() for m in re.finditer(':', log_clean)]
-    log_truncated_equals = -1
+    log_truncated_equals = -1  
 
     if len(colon_indices) >= 2:
-
         log_before_second_colon = log_clean[:colon_indices[1]]
         log_truncated_equals = log_before_second_colon.count('=')
 
@@ -22,30 +22,25 @@ def verify_one_regex_to_match_whole_log(log, regex):
             template_equals_count != log_outside_equals and
             template_equals_count != log_truncated_equals):
         return False
-
     if not regex_clean.startswith('^'):
         regex_clean = '^' + regex_clean
     if not regex_clean.endswith('$'):
         regex_clean = regex_clean + '$'
 
     try:
-        match = re.search(regex_clean, log_clean, timeout=2.0)
+        match = re.search(regex_clean, log_clean)
         if not match:
             return False
 
-
         groups = match.groups()
         if len(groups) > 1:
-
             for i in range(len(groups) - 1):
                 group_content = groups[i]
-
                 if group_content and '=' in group_content:
-
                     return False
 
         return True
-    except (re.error, TimeoutError):
+    except re.error:
         return False
 
 
@@ -65,13 +60,11 @@ class RegexTemplateManager:
     def apply_cleaning_rules(self, regex_template):
         regex_template = re.sub(r"<\s*\*\s*>", "(.*?)", regex_template)
         if is_punctuation_or_space(regex_template):
-            #print(f"DEBUG: apply_cleaning_rules REJECTED: {regex_template}")
             return False
         regex_template = re.sub(r"\bfrom\s+\S+\s+to\s+\S+", "from (.*?) to (.*?)", regex_template)
-        max_iterations = 2
+        max_iterations = 2  
         for _ in range(max_iterations):
             original = regex_template
-
 
 
             regex_template = re.sub(r"\(\.\*\?\)+://\(\.\*\?\)", "(.*?)", regex_template)
@@ -79,20 +72,19 @@ class RegexTemplateManager:
             regex_template = re.sub(r"www\.\(\.\*\?\)", "(.*?)", regex_template)
 
 
-
             if regex_template.startswith("_") and regex_template.startswith("_(.*?)"):
                 regex_template = regex_template[1:]
 
-            
             if regex_template == original:
                 break
         return regex_template.strip()
 
     def _count_static_tokens(self, template):
-
-
+        """
+        Count the number of valid static words in the template.
+        Principle: After removing all regex variables (.*?), extract the remaining alphanumeric words from the text.
+        """
         static_content = template.replace("(.*?)", " ")
-
         tokens = re.findall(r'\b[a-zA-Z0-9_]{2,}\b', static_content)
         return len(tokens)
 
@@ -107,13 +99,9 @@ class RegexTemplateManager:
         self.regex_template_set.add(regex_template)
         static_token_count = self._count_static_tokens(regex_template)
         if static_token_count <= 1:
-
-            # print(f"DEBUG: Template '{regex_template}' has too few static tokens ({static_token_count}). Skipped from candidate pool.")
-
             return regex_template
 
         word_count = regex_template.count(' ') + 1
-
         self.templates.append((word_count, regex_template))
         self.templates.sort(key=lambda x: x[0], reverse=True)
 
@@ -124,7 +112,7 @@ class RegexTemplateManager:
             self.add_regex_template(regex_template)
 
     def print_regex_templates(self):
-
+        """Print all templates"""
         print("\n--- Current Regex Templates in Manager (Global List) ---", flush=True)
         for word_count, regex_template in self.templates:
             print(f"Word Count: {word_count}, Regex: {regex_template}", flush=True)
@@ -145,7 +133,6 @@ class RegexTemplateManager:
 
     def get_regex_templates_by_length(self, log, max_length):
 
-
         return [t for t in self.templates if max_length - 8 <= t[0] <= max_length + 1]
 
     def find_matched_regex_template(self, log):
@@ -158,18 +145,13 @@ class RegexTemplateManager:
 
         log_length = len(log.split())
 
-
         start_index = self.get_index_by_length(log_length)
-
 
         if start_index == -1 or start_index >= len(self.templates):
             return None
 
-
         for i in range(start_index, len(self.templates)):
-
             _, regex = self.templates[i]
-
 
             if verify_one_regex_to_match_whole_log(log, regex):
                 return regex
