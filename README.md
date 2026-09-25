@@ -33,7 +33,13 @@ We present StaLog repository structure below.
 │   ├── auto_marker_generator.py
 │   ├── grouping.py
 │   ├── llama_parser.py
-│   └── regex_manager.py
+│   ├──regex_manager.py
+│   ├──roberta_marker_stats_HealthApp_raw_score_scatter.png
+│   ├──roberta_marker_stats_HPC_raw_score_scatter.png
+│   ├──roberta_marker_stats_Apache_raw_score_scatter.png
+│   ├──roberta_marker_stats_Proxifier_raw_score_scatter.png
+│   ├──roBERTa_determination_accuracy.csv
+│   └── Llama_determination_accuracy.csv
 ├── parsing.sh
 ├── requirements.txt
 └── results
