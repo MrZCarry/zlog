@@ -42,7 +42,7 @@ We present StaLog repository structure below.
 
 
 ## Requirement 
-
+Ensure you have Python 3.9.23+ installed.
 ```shell
 pip install -r requirements.txt
 ```
@@ -51,10 +51,26 @@ pip install -r requirements.txt
 
 Please download the base LLM (Meta-Llama-3-8B-Instruct) from [Huggingface](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct).
 
-
 ## Datasets download
 
 Please first download the full datasets of Loghub-2.0 via [Zenodo](https://zenodo.org/record/8275861).
+Unzip the files into the following directory:
+```txt
+full_dataset/
+```
+Example structure:
+
+```txt
+📦 Stalog
+├─ full_dataset
+│     ├─ Apache
+│     │  ├─ Apache_full.log
+│     │  ├─ Apache_full.log_structured.csv
+│     │  ├─ Apache_full.log_structured_corrected.csv
+│     │  ├─ Apache_full.log_templates.csv
+│     │  └─ Apache_full.log_templates_corrected.csv
+│     ├─ ...
+```
 
 
 ## Parsing
@@ -63,7 +79,14 @@ Please run the following command to run StaLog.
 ```shell
 sh parsing.sh
 ```
-
+Parsed log results will be saved to:
+```txt
+result/
+```
+static determination accuracy results will be saved to:
+```txt
+parser/
+```
 
 ## Evaluation Results
 ### RQ1: Howe ffective is StaLog??
@@ -73,6 +96,6 @@ sh parsing.sh
 <p align="center"><img src="evaluation/RQ2/RQ2_1.png" width="500"></p>
 <p align="center"><img src="evaluation/RQ2/RQ2_2.png" width="500"></p>
 <p align="center"><img src="evaluation/RQ2/RQ2_3.png" width="500"></p>
-### RQ3: Howe fficient is StaLog?
+### RQ3: How does Stalog perform on different LLMs??
 <p align="center"><img src="evaluation/RQ3/RQ3_1.png" width="500"></p>
 
