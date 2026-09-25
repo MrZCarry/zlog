@@ -96,6 +96,7 @@ parser/
 <p align="center"><img src="evaluation/RQ2/RQ2_1.png" width="500"></p>
 <p align="center"><img src="evaluation/RQ2/RQ2_2.png" width="500"></p>
 <p align="center"><img src="evaluation/RQ2/RQ2_3.png" width="500"></p>
-### RQ3: How does Stalog perform on different LLMs??
+
+### RQ3: How does Stalog perform on different LLMs?
 <p align="center"><img src="evaluation/RQ3/RQ3_1.png" width="500"></p>
 
