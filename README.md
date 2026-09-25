@@ -96,8 +96,8 @@ static determination accuracy and roberta_marker_stats_raw_score_scatter results
 ```txt
 parser/
 ```
-<p align="center"><img src="evaluation/RQ1/<p align="center"><img src="parser/roberta_marker_stats_HPC_raw_score_scatter.png" width="800"></p>" width="800"></p>
-<p align="center"><img src="evaluation/RQ1/<p align="center"><img src="parser/roberta_marker_stats_HealthApp_raw_score_scatter.png" width="800"></p>" width="800"></p>
+<p align="center"><img src="evaluation/RQ1/<p align="center"><img src="parser/roberta_marker_stats_HPC_raw_score_scatter.png" width="800"></p>
+<p align="center"><img src="evaluation/RQ1/<p align="center"><img src="parser/roberta_marker_stats_HealthApp_raw_score_scatter.png" width="800"></p>
 
 
 ## Evaluation Results
