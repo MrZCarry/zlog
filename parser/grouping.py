@@ -1,7 +1,6 @@
 """
 Description : This file implements the Drain algorithm for log parsing
-Author      : LogPAI team
-License     : MIT
+
 """
 
 import regex as re
@@ -207,12 +206,9 @@ class LogParser:
 
         self.load_data(logs)
 
-
-        for line in self.df_log.itertuples():
-            logID = line.LineId
-
-            logmessageL = line.Content_.strip().split() 
-            
+        for idx, line in self.df_log.iterrows():
+            logID = line['LineId']
+            logmessageL = self.preprocess(line['Content']).strip().split()
             matchCluster = self.treeSearch(rootNode, logmessageL)
 
             if matchCluster is None:
@@ -227,6 +223,12 @@ class LogParser:
                     matchCluster.logTemplate = newTemplate
 
         list_result = self.outputResult(logCluL)
+
+        for i, logClust in enumerate(logCluL[:5]):  
+            print(f"\nGroup {i + 1} ({len(logClust.logIDL)} logs) example:")
+            for log_id in logClust.logIDL[:3]:  
+                print(f"  {self.df_log.loc[self.df_log['LineId'] == log_id, 'Content'].values[0]}")
+
         time_taken = datetime.now() - start_time
         self.total_time += time_taken.total_seconds()
         return list_result
@@ -236,21 +238,16 @@ class LogParser:
 
 
     def load_data(self, logs):
+        def preprocess(log):
+            for currentRex in self.rex:
+                log = re.sub(currentRex, "<*>", log)
+            return log
+
         linecount = len(logs)
         self.df_log = pd.DataFrame(logs, columns=['Content'])
-        self.df_log.insert(0, "LineId", range(1, linecount + 1))
-        
-
-        if self.rex:
-
-            combined_pattern = '|'.join(f'(?:{r})' for r in self.rex)
-
-            compiled_rex = re.compile(combined_pattern)
-            
-
-            self.df_log["Content_"] = [compiled_rex.sub('<*>', log) for log in self.df_log["Content"]]
-        else:
-            self.df_log["Content_"] = self.df_log["Content"]
+        self.df_log.insert(0, "LineId", None)
+        self.df_log["LineId"] = [i + 1 for i in range(linecount)]
+        self.df_log["Content_"] = self.df_log["Content"].map(preprocess)   
 
     def preprocess(self, line):
         for currentRex in self.rex:
