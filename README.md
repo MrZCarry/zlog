@@ -51,9 +51,8 @@ pip install -r requirements.txt
 
 Please download the base LLM (Meta-Llama-3-8B-Instruct) from [Huggingface](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct).
 
-The VRAM requirements for running the Meta Llama 3 8B model are as follows:
-
-FP16 (Half-precision / default full-parameter inference): Requires 16-18 GB VRAM. Recommended GPUs: RTX 4090 (24 GB), L40S (48 GB), RTX 4080, and other devices with more than 16 GB of VRAM.
+The VRAM requirements for running the Meta Llama 3 8B model are as follows:  
+FP16 (Half-precision / default full-parameter inference): Requires 16-18 GB VRAM. Recommended GPUs: RTX 4090 (24 GB), L40S (48 GB), RTX 4080, and other devices with more than 16 GB of VRAM.  
 INT8 / FP8 (8-bit quantization): Requires 8 GB to 8.8 GB VRAM. Recommended GPUs: RTX 3060 (12 GB), RTX 4070 (12 GB), and other devices with more than 10 GB of VRAM.
 
 Put the models into the following directory:
