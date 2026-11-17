@@ -81,11 +81,11 @@ Example structure:
 │     ├─ Apache
 │     │  ├─ Apache_full.log
 │     │  ├─ Apache_full.log_structured.csv
-│     │  └─  Apache_full.log_templates.csv
+│     │  └─ Apache_full.log_templates.csv
 │     ├─ BGL
 │     │  ├─ BGL_full.log
 │     │  ├─ BGL_full.log_structured.csv
-│     │  └─  BGL_full.log_templates.csv
+│     │  └─ BGL_full.log_templates.csv
 │     ├─ ...
 ```
 
